@@ -1,0 +1,25 @@
+name: Dummy job
+
+on:
+  schedule:
+    - cron: "*/2 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: python main.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "Gaurav Lodha"
+          git config user.email "gauravlodha91@gmail.com"
+          git add data/
+          git commit -m "Append log lines" || exit 0
+          git push
